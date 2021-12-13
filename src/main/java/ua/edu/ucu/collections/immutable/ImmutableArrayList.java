@@ -36,10 +36,7 @@ public final class ImmutableArrayList implements ImmutableList {
 
     @Override
     public ImmutableList addAll(Object[] c) {
-        Object[] newArray = new Object[this.size() + c.length];
-        System.arraycopy(this.array, 0, newArray, 0, this.size());
-        System.arraycopy(c, 0, newArray, this.size(), c.length);
-        return new ImmutableArrayList(newArray);
+        return addAll(this.size(), c);
     }
 
     @Override
