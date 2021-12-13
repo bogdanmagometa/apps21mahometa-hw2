@@ -26,7 +26,11 @@ public final class ImmutableArrayList implements ImmutableList {
         Object[] newArray = new Object[this.size() + 1];
         System.arraycopy(this.array, 0, newArray, 0, index);
         newArray[index] = e;
-        System.arraycopy(this.array, index, newArray, index+1, this.size() - index);
+        System.arraycopy(this.array,
+                index,
+                newArray,
+                index+1,
+                this.size() - index);
         return new ImmutableArrayList(newArray);
     }
 
@@ -43,7 +47,11 @@ public final class ImmutableArrayList implements ImmutableList {
         Object[] newArray = new Object[this.size() + c.length];
         System.arraycopy(this.array, 0, newArray, 0, index);
         System.arraycopy(c, 0, newArray, index, c.length);
-        System.arraycopy(this.array, index, newArray, index + c.length, this.size() - index);
+        System.arraycopy(this.array,
+                index,
+                newArray,
+                index + c.length,
+                this.size() - index);
         return new ImmutableArrayList(newArray);
     }
 
@@ -56,7 +64,11 @@ public final class ImmutableArrayList implements ImmutableList {
     public ImmutableList remove(int index) {
         Object[] newArray = new Object[this.size() - 1];
         System.arraycopy(this.array, 0, newArray, 0, index);
-        System.arraycopy(this.array, index+1, newArray, index, this.size()-index-1);
+        System.arraycopy(this.array,
+                index+1,
+                newArray,
+                index,
+                this.size()-index-1);
         return new ImmutableArrayList(newArray);
     }
 

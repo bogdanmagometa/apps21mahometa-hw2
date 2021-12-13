@@ -126,4 +126,29 @@ public class ImmutableLinkedListTest {
         ImmutableLinkedList clone = new ImmutableLinkedList(linkedList);
         assertArrayEquals(linkedList.toArray(), clone.toArray());
     }
+
+    @Test
+    public void testAddAll() {
+        linkedList = (ImmutableLinkedList) linkedList.addAll(new Object[] {1, 2, 3, 4});
+        assertArrayEquals(new Object[] {1, 2, 3, 4, 5, 1, 2, 3, 4}, linkedList.toArray());
+        linkedList = (ImmutableLinkedList) linkedList.addAll(0, new Object[] {-1, -12});
+        assertArrayEquals(new Object[] {-1, -12, 1, 2, 3, 4, 5, 1, 2, 3, 4},
+                linkedList.toArray());
+        linkedList = (ImmutableLinkedList) linkedList.addAll(2, new Object[] {-1, -12});
+        assertArrayEquals(new Object[] {-1, -12, -1, -12, 1, 2, 3, 4, 5, 1, 2, 3, 4},
+                linkedList.toArray());
+
+    }
+
+    @Test
+    public void testAdd() {
+        linkedList = (ImmutableLinkedList) linkedList.add(0, -123);
+        assertEquals(-123, linkedList.get(0));
+        linkedList = (ImmutableLinkedList) linkedList.add(1, -123);
+        assertEquals(-123, linkedList.get(1));
+        linkedList = (ImmutableLinkedList) linkedList.addLast(-123);
+        assertEquals(-123, linkedList.get(linkedList.size()-1));
+        linkedList = (ImmutableLinkedList) linkedList.addFirst(-123);
+        assertEquals(-123, linkedList.get(0));
+    }
 }
