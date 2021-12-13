@@ -34,6 +34,18 @@ public final class ImmutableLinkedList implements ImmutableList {
         len = 0;
     }
 
+    /**
+     * Copy constructor
+     * */
+    public ImmutableLinkedList(ImmutableLinkedList linkedList) {
+        this();
+        Node probe = linkedList.first;
+        while (probe != null) {
+            this.mutAddLast(probe.getValue());
+            probe = probe.getNext();
+        }
+    }
+
     @Override
     public ImmutableList add(Object e) {
         return this.add(this.size(), e);
@@ -159,6 +171,9 @@ public final class ImmutableLinkedList implements ImmutableList {
         return (ImmutableLinkedList) this.remove(this.size() - 1);
     }
 
+    /**
+     * private mutating methods
+     */
     private void mutAddFirst(Object e) {
         Node newFirst = new Node(e, null, first);
         if (first != null) {
@@ -252,18 +267,6 @@ public final class ImmutableLinkedList implements ImmutableList {
             i++;
         }
         return probe;
-    }
-
-    /**
-     * Copy constructor
-     * */
-    public ImmutableLinkedList(ImmutableLinkedList linkedList) {
-        this();
-        Node probe = linkedList.first;
-        while (probe != null) {
-            this.mutAddLast(probe.getValue());
-            probe = probe.getNext();
-        }
     }
 
 }

@@ -3,6 +3,8 @@ package ua.edu.ucu.collections.immutable;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.NoSuchElementException;
+
 import static org.junit.Assert.*;
 
 public class ImmutableLinkedListTest {
@@ -151,4 +153,35 @@ public class ImmutableLinkedListTest {
         linkedList = (ImmutableLinkedList) linkedList.addFirst(-123);
         assertEquals(-123, linkedList.get(0));
     }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testExceptionGet0() {
+        linkedList = new ImmutableLinkedList();
+        linkedList.get(0);
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testExceptionIndexOf() {
+        linkedList = new ImmutableLinkedList();
+        linkedList.indexOf(0);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testExceptionAdd() {
+        linkedList = new ImmutableLinkedList();
+        linkedList.add(1, 12);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testExceptionAddAll() {
+        linkedList = new ImmutableLinkedList();
+        linkedList.addAll(1, new Object[] {1, 2, 3});
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testExceptionGet() {
+        linkedList = new ImmutableLinkedList();
+        linkedList.get(0);
+    }
+
 }
