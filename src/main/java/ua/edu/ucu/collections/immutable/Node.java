@@ -5,7 +5,7 @@ public class Node {
     private Node next;
     private Object value;
 
-    public Node() {}
+    public Node() { }
     public Node(Object value, Node previous, Node next) {
         this.value = value;
         this.previous = previous;

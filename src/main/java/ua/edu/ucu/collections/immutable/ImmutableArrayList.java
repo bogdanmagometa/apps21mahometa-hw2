@@ -56,7 +56,7 @@ public final class ImmutableArrayList implements ImmutableList {
     public ImmutableList remove(int index) {
         Object[] newArray = new Object[this.size() - 1];
         System.arraycopy(this.array, 0, newArray, 0, index);
-        System.arraycopy(this.array, index+1, newArray, index, this.size()-index);
+        System.arraycopy(this.array, index+1, newArray, index, this.size()-index-1);
         return new ImmutableArrayList(newArray);
     }
 
@@ -89,7 +89,7 @@ public final class ImmutableArrayList implements ImmutableList {
 
     @Override
     public boolean isEmpty() {
-        return this.size() > 0;
+        return this.size() == 0;
     }
 
     @Override

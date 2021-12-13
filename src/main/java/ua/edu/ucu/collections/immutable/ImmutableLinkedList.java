@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 public final class ImmutableLinkedList implements ImmutableList {
     private Node first;
     private Node last;
-    private int size;
+    private int len;
 
     public ImmutableLinkedList(Object[] elements) {
         int size = 0;
@@ -16,7 +16,8 @@ public final class ImmutableLinkedList implements ImmutableList {
             Node probe = new Node(elements[0], null, null);
             size++;
             first = probe;
-            for (Object element : elements) {
+            for (int i = 1; i < elements.length; i++) {
+                Object element = elements[i];
                 probe = new Node(element, probe, null);
                 probe.getPrevious().setNext(probe);
                 size++;
@@ -24,13 +25,13 @@ public final class ImmutableLinkedList implements ImmutableList {
             last = probe;
 
         }
-        this.size = size;
+        this.len = size;
     }
 
     public ImmutableLinkedList() {
         first = null;
         last = null;
-        size = 0;
+        len = 0;
     }
 
     @Override
@@ -40,7 +41,7 @@ public final class ImmutableLinkedList implements ImmutableList {
 
     @Override
     public ImmutableList add(int index, Object e) {
-        ImmutableLinkedList newLL = clone();
+        ImmutableLinkedList newLL = new ImmutableLinkedList(this);
         newLL.mutAdd(index, e);
         return newLL;
     }
@@ -52,7 +53,7 @@ public final class ImmutableLinkedList implements ImmutableList {
 
     @Override
     public ImmutableList addAll(int index, Object[] c) {
-        ImmutableLinkedList newLL = clone();
+        ImmutableLinkedList newLL = new ImmutableLinkedList(this);
         newLL.mutAddAll(index, c);
         return newLL;
     }
@@ -60,21 +61,24 @@ public final class ImmutableLinkedList implements ImmutableList {
     @Override
     public Object get(int index) {
         if (index < 0 || index >= this.size()) {
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds. Size is " + this.size());
+            throw new IndexOutOfBoundsException("Index "
+                    + index
+                    + " is out of bounds. Size is "
+                    + this.size());
         }
         return getNode(index).getValue();
     }
 
     @Override
     public ImmutableList remove(int index) {
-        ImmutableLinkedList newll = clone();
+        ImmutableLinkedList newll = new ImmutableLinkedList(this);
         newll.mutRemove(index);
         return newll;
     }
 
     @Override
     public ImmutableList set(int index, Object e) {
-        ImmutableLinkedList newll = clone();
+        ImmutableLinkedList newll = new ImmutableLinkedList(this);
         Node node = newll.getNode(index);
         node.setValue(e);
         return newll;
@@ -84,19 +88,20 @@ public final class ImmutableLinkedList implements ImmutableList {
     public int indexOf(Object e) {
         int i = 0;
         Node probe = first;
-        while (probe != null && !probe.equals(e)) {
+        while (probe != null && !probe.getValue().equals(e)) {
             i++;
             probe = probe.getNext();
         }
         if (probe == null) {
-            throw new NoSuchElementException("No " + e + " in the linked list.");
+            throw new NoSuchElementException("No " + e
+                    + " in the linked list.");
         }
         return i;
     }
 
     @Override
     public int size() {
-        return this.size;
+        return this.len;
     }
 
     @Override
@@ -106,12 +111,12 @@ public final class ImmutableLinkedList implements ImmutableList {
 
     @Override
     public boolean isEmpty() {
-        return size == 0;
+        return len == 0;
     }
 
     @Override
     public Object[] toArray() {
-        Object[] arr = new Object[size];
+        Object[] arr = new Object[len];
         Node probe = first;
         int i = 0;
         while (probe != null) {
@@ -162,7 +167,7 @@ public final class ImmutableLinkedList implements ImmutableList {
             last = newFirst;
         }
         first = newFirst;
-        size++;
+        len++;
     }
 
     private void mutAddLast(Object e) {
@@ -173,7 +178,7 @@ public final class ImmutableLinkedList implements ImmutableList {
             first = newLast;
         }
         last = newLast;
-        size++;
+        len++;
     }
 
     private void mutAdd(int index, Object e) {
@@ -186,15 +191,20 @@ public final class ImmutableLinkedList implements ImmutableList {
             Node newNode = new Node(e, probe.getPrevious(), probe);
             probe.getPrevious().setNext(newNode);
             probe.setPrevious(newNode);
-            this.size++;
+            this.len++;
         } else {
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds");
+            throw new IndexOutOfBoundsException("Index "
+                    + index
+                    + " is out of bounds");
         }
     }
 
     private void mutRemove(int index) {
         if (index < 0 || index >= this.size()) {
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds. Size is " + this.size());
+            throw new IndexOutOfBoundsException("Index "
+                    + index
+                    + " is out of bounds. Size is "
+                    + this.size());
         }
         Node probe = getNode(index);
         Node prev = probe.getPrevious();
@@ -202,7 +212,7 @@ public final class ImmutableLinkedList implements ImmutableList {
         if (index == 0) {
             first = first.getNext();
         }
-        if (index == this.size - 1) {
+        if (index == this.len - 1) {
             last = last.getPrevious();
         }
         if (prev != null) {
@@ -211,12 +221,15 @@ public final class ImmutableLinkedList implements ImmutableList {
         if (next != null) {
             next.setPrevious(prev);
         }
-        this.size--;
+        this.len--;
     }
 
     private void mutAddAll(int index, Object[] c) {
         if (index < 0 || index > this.size()) {
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds. Size is " + this.size());
+            throw new IndexOutOfBoundsException("Index "
+                    + index
+                    + " is out of bounds. Size is "
+                    + this.size());
         }
         int i = index;
         for (Object obj: c) {
@@ -227,7 +240,10 @@ public final class ImmutableLinkedList implements ImmutableList {
 
     private Node getNode(int index) {
         if (index < 0 || index >= this.size()) {
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds. Size is " + this.size());
+            throw new IndexOutOfBoundsException("Index "
+                    + index
+                    + " is out of bounds. Size is "
+                    + this.size());
         }
         int i = 0;
         Node probe = first;
@@ -238,14 +254,16 @@ public final class ImmutableLinkedList implements ImmutableList {
         return probe;
     }
 
-    public ImmutableLinkedList clone() {
-        Node probe = first;
-        ImmutableLinkedList cloned = new ImmutableLinkedList();
+    /**
+     * Copy constructor
+     * */
+    public ImmutableLinkedList(ImmutableLinkedList linkedList) {
+        this();
+        Node probe = linkedList.first;
         while (probe != null) {
-            cloned.mutAddLast(probe.getValue());
+            this.mutAddLast(probe.getValue());
             probe = probe.getNext();
         }
-        return cloned;
     }
 
 }
